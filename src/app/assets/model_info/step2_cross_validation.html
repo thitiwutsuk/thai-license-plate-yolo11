@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>License Plate Detection · Step 1–4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0;background:#FAFAFA}
+section+section{border-top:1px solid #ECECEF}
+</style>
+</head>
+<body style="margin:0;background:#FAFAFA">
+<div id="scale-wrap">
+<section style="width: 1440px; min-width: 1440px; max-width: 1440px; margin: 0 auto; box-sizing: border-box; padding: 64px; display: flex; flex-direction: column; gap: 28px; background: #FAFAFA; font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif; color: #09090B">
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; letter-spacing: 0.08em; font-weight: 500; color: #4F46E5">STEP 2 · 5-FOLD CROSS-VALIDATION</div>
+<h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 700; letter-spacing: -0.02em">ผล Cross-Validation รายโฟลด์</h1>
+<p style="margin: 0; font-size: 16px; line-height: 26px; color: #52525B">แบ่งข้อมูล train 200 รูปเป็น 5 ส่วน เทรนวนครบ 5 รอบ แล้วเลือก fold ที่ mAP@0.5 สูงสุดไปใช้งานจริง</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #09090B; border-radius: 16px; color: #FFFFFF">
+<div style="font-size: 13px; line-height: 20px; color: #D4D4D8">โมเดลที่ใช้งานจริง</div>
+<div style="font-size: 36px; line-height: 40px; font-weight: 700; letter-spacing: -0.02em">Fold 3</div>
+<div style="font-size: 13px; line-height: 20px; color: #D4D4D8">เลือกจาก mAP@0.5 สูงสุด</div>
+</div>
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 16px">
+<div style="font-size: 13px; line-height: 20px; color: #52525B">mAP@0.5</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">0.995</div>
+<div style="font-size: 13px; line-height: 20px; color: #52525B"><span>เฉลี่ย 5 fold 0.986 · <b style="color: #15803D; font-weight: 600">+0.009</b></span></div>
+</div>
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 16px">
+<div style="font-size: 13px; line-height: 20px; color: #52525B">Precision</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">1.000</div>
+<div style="font-size: 13px; line-height: 20px; color: #52525B"><span>เฉลี่ย 5 fold 0.967 · <b style="color: #15803D; font-weight: 600">+0.033</b></span></div>
+</div>
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 16px">
+<div style="font-size: 13px; line-height: 20px; color: #52525B">Recall</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">0.993</div>
+<div style="font-size: 13px; line-height: 20px; color: #52525B"><span>เฉลี่ย 5 fold 0.966 · <b style="color: #15803D; font-weight: 600">+0.027</b></span></div>
+</div>
+</div>
+
+<div style="flex: 1; box-sizing: border-box; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 20px">
+
+<div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap">
+<h2 style="margin: 0; font-size: 18px; line-height: 28px; font-weight: 600">คะแนนแต่ละโฟลด์</h2>
+<div style="display: flex; flex-direction: row; align-items: center; gap: 24px; font-size: 14px; line-height: 20px; color: #3F3F46">
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 14px; height: 14px; border-radius: 4px; background: #60A5FA"></div>Precision</div>
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 14px; height: 14px; border-radius: 4px; background: #F59E0B"></div>Recall</div>
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 14px; height: 14px; border-radius: 4px; background: #1E3A8A"></div>mAP@0.5</div>
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 20px; height: 0; border-top: 2px dashed #0F766E"></div>ค่าเฉลี่ย mAP 0.986</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: row; gap: 12px">
+<div style="position: relative; width: 40px; height: 304px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #71717A; text-align: right">
+<div style="position: absolute; right: 0; bottom: -8px">0.90</div>
+<div style="position: absolute; right: 0; bottom: 48px">0.92</div>
+<div style="position: absolute; right: 0; bottom: 104px">0.94</div>
+<div style="position: absolute; right: 0; bottom: 160px">0.96</div>
+<div style="position: absolute; right: 0; bottom: 216px">0.98</div>
+<div style="position: absolute; right: 0; bottom: 272px">1.00</div>
+</div>
+<div style="position: relative; flex: 1; min-width: 0; height: 304px">
+<div style="position: absolute; left: 0; right: 0; bottom: 56px; border-top: 1px solid #F0F0F2"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 112px; border-top: 1px solid #F0F0F2"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 168px; border-top: 1px solid #F0F0F2"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 224px; border-top: 1px solid #F0F0F2"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 280px; border-top: 1px solid #F0F0F2"></div>
+
+<div style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px">
+
+<div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: center; gap: 8px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>0.952</div><div style="width: 44px; height: 146px; border-radius: 6px 6px 0 0; background: #60A5FA"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>0.996</div><div style="width: 44px; height: 269px; border-radius: 6px 6px 0 0; background: #F59E0B"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #09090B; font-weight: 600"><div>0.990</div><div style="width: 44px; height: 252px; border-radius: 6px 6px 0 0; background: #1E3A8A"></div></div>
+</div>
+
+<div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: center; gap: 8px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>0.936</div><div style="width: 44px; height: 101px; border-radius: 6px 6px 0 0; background: #60A5FA"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>0.951</div><div style="width: 44px; height: 143px; border-radius: 6px 6px 0 0; background: #F59E0B"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #09090B; font-weight: 600"><div>0.970</div><div style="width: 44px; height: 196px; border-radius: 6px 6px 0 0; background: #1E3A8A"></div></div>
+</div>
+
+<div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: center; gap: 8px; background: #EEF2FF; border-radius: 12px 12px 0 0">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #3F3F46"><div>1.000</div><div style="width: 44px; height: 280px; border-radius: 6px 6px 0 0; background: #60A5FA"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #3F3F46"><div>0.993</div><div style="width: 44px; height: 260px; border-radius: 6px 6px 0 0; background: #F59E0B"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #09090B; font-weight: 600"><div>0.995</div><div style="width: 44px; height: 266px; border-radius: 6px 6px 0 0; background: #1E3A8A"></div></div>
+</div>
+
+<div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: center; gap: 8px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>0.974</div><div style="width: 44px; height: 207px; border-radius: 6px 6px 0 0; background: #60A5FA"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>0.942</div><div style="width: 44px; height: 118px; border-radius: 6px 6px 0 0; background: #F59E0B"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #09090B; font-weight: 600"><div>0.988</div><div style="width: 44px; height: 246px; border-radius: 6px 6px 0 0; background: #1E3A8A"></div></div>
+</div>
+
+<div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: center; gap: 8px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>0.971</div><div style="width: 44px; height: 199px; border-radius: 6px 6px 0 0; background: #60A5FA"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>0.950</div><div style="width: 44px; height: 140px; border-radius: 6px 6px 0 0; background: #F59E0B"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #09090B; font-weight: 600"><div>0.986</div><div style="width: 44px; height: 241px; border-radius: 6px 6px 0 0; background: #1E3A8A"></div></div>
+</div>
+
+</div>
+
+<div style="position: absolute; left: 0; right: 0; bottom: 240px; border-top: 2px dashed #0F766E; pointer-events: none"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #A1A1AA"></div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: row; gap: 12px">
+<div style="width: 40px"></div>
+<div style="flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 16px; font-size: 15px; line-height: 24px; font-weight: 600; text-align: center">
+<div>Fold 1</div>
+<div>Fold 2</div>
+<div style="display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 8px"><div>Fold 3</div><div style="padding: 0 10px; border-radius: 999px; background: #4F46E5; color: #FFFFFF; font-size: 12px; line-height: 22px; font-weight: 600">ใช้งานจริง</div></div>
+<div>Fold 4</div>
+<div>Fold 5</div>
+</div>
+</div>
+
+<p style="margin: 0; font-size: 13px; line-height: 20px; color: #71717A">แกนตั้งเริ่มที่ 0.90 (ไม่ใช่ 0) เพื่อให้เห็นความต่างระหว่างโฟลด์ได้ชัด</p>
+
+</div>
+</section>
+</div>
+<script>
+(function(){
+  var wrap = document.getElementById("scale-wrap");
+  function fit(){
+    wrap.style.zoom = 1;
+    var full = wrap.scrollWidth || 1440;
+    var avail = document.documentElement.clientWidth || window.innerWidth;
+    var scale = Math.min(1, avail / full);
+    wrap.style.zoom = scale;
+    var h = Math.ceil(wrap.getBoundingClientRect().height) + 4;
+    if (window.frameElement) { window.frameElement.style.height = h + "px"; }
+  }
+  fit();
+  window.addEventListener("resize", fit);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+[
+ {
+  "key": "sha",
+  "path": "src/data_prep/ingest_images.py",
+  "line": 31,
+  "code": "def sha256_of_file(path: Path) -> str:\n    h = hashlib.sha256()\n    with open(path, \"rb\") as f:\n        for chunk in iter(lambda: f.read(8192), b\"\"):\n            h.update(chunk)\n    return h.hexdigest()"
+ },
+ {
+  "key": "resize",
+  "path": "src/data_prep/ingest_images.py",
+  "line": 67,
+  "code": "def resize_and_save(src_path: Path, dst_path: Path) -> tuple[int, int]:\n    im = Image.open(src_path).convert(\"RGB\")\n    w, h = im.size\n    scale = MAX_SIDE / max(w, h)\n    if scale < 1:\n        im = im.resize((int(w * scale), int(h * scale)), Image.LANCZOS)\n    im.save(dst_path, \"JPEG\", quality=JPEG_QUALITY, optimize=True)\n    return im.size"
+ },
+ {
+  "key": "group",
+  "path": "src/data_prep/split_folds.py",
+  "line": 38,
+  "code": "def extract_group_key(source_url: str) -> str:\n    \"\"\"ดึง 'ชื่อรถ' จาก URL ต้นฉบับ เพื่อจัดกลุ่มรูปที่เป็นรถคันเดียวกัน\"\"\"\n    name = source_url.split(\"File:\")[-1] if \"File:\" in source_url else source_url\n    name = urllib.parse.unquote(name)\n    name = re.sub(r\"\\.(jpg|jpeg|png|JPG|JPEG|PNG)$\", \"\", name)\n    name = re.sub(r\"\\s*\\(\\d{6,}\\)\\s*$\", \"\", name)  # flickr id ท้ายชื่อ\n    name = re.sub(r\"[\\s_]*(front|rear|side|left|right|cropped|\\d{1,2})[\\s_]*$\", \"\", name, flags=re.IGNORECASE)\n    name = re.sub(r\"\\s*\\([^)]*\\)\\s*$\", \"\", name)\n    return name.strip().lower()"
+ },
+ {
+  "key": "fold",
+  "path": "src/data_prep/split_folds.py",
+  "line": 121,
+  "code": "    fold_assign = [[] for _ in range(N_FOLDS)]\n    fold_counts = [0] * N_FOLDS\n    target_per_fold = len(train_pool_files) / N_FOLDS\n\n    for key, files in pool_groups_shuffled:\n        # ใส่กลุ่มนี้ลง fold ที่มีรูปน้อยที่สุดตอนนี้ (ทำให้สมดุลใกล้เคียงกัน)\n        min_fold = min(range(N_FOLDS), key=lambda i: fold_counts[i])\n        fold_assign[min_fold].extend(files)\n        fold_counts[min_fold] += len(files)\n\n    print(\"จำนวนรูปต่อ fold:\", fold_counts)"
+ },
+ {
+  "key": "yaml",
+  "path": "src/data_prep/split_folds.py",
+  "line": 83,
+  "code": "def write_data_yaml(path: Path, train_dir: Path, val_dir: Path):\n    content = (\n        f\"train: {train_dir.resolve()}\\n\"\n        f\"val: {val_dir.resolve()}\\n\"\n        f\"nc: 1\\n\"\n        f\"names: ['license_plate']\\n\"\n    )\n    path.write_text(content, encoding=\"utf-8\")"
+ },
+ {
+  "key": "train",
+  "path": "src/train/train_yolo11.py",
+  "line": 64,
+  "code": "        model = YOLO(args.model)\n        run_name = f\"fold_{fold}\"\n        train_result = model.train(\n            data=str(data_yaml),\n            epochs=args.epochs,\n            imgsz=args.imgsz,\n            batch=args.batch,\n            device=args.device,\n            project=str(OUT_DIR / \"runs\"),\n            name=run_name,\n            exist_ok=True,\n            verbose=not args.smoke,\n            plots=not args.smoke,\n        )\n\n        metrics = model.val(\n            data=str(data_yaml),\n            device=args.device,\n            project=str(OUT_DIR / \"runs\"),\n            name=f\"{run_name}_val\",\n            plots=not args.smoke,\n        )\n        precision = float(metrics.box.mp)"
+ },
+ {
+  "key": "predict",
+  "path": "src/inference/predict_and_crop.py",
+  "line": 83,
+  "code": "    t0 = time.perf_counter()\n    if model is None:\n        model = YOLO(str(weights_path))\n    results = model.predict(source=str(image_path), conf=conf, iou=iou, device=resolve_device(device), verbose=False)\n    boxes = results[0].boxes\n    elapsed_ms = (time.perf_counter() - t0) * 1000\n\n    if boxes is None or len(boxes) == 0:\n        return None, \"ไม่พบป้ายทะเบียน\", {\n            \"num_detections\": 0, \"box_xyxy\": None, \"confidence\": None, \"elapsed_ms\": elapsed_ms,\n        }\n\n    # เลือกกรอบใหญ่ที่สุด (รถคันหลัก) ถ้าเจอหลายป้าย\n    areas = (boxes.xyxy[:, 2] - boxes.xyxy[:, 0]) * (boxes.xyxy[:, 3] - boxes.xyxy[:, 1])\n    best_idx = int(areas.argmax())\n    best_box = boxes.xyxy[best_idx].tolist()\n    best_conf = float(boxes.conf[best_idx])"
+ },
+ {
+  "key": "crop",
+  "path": "src/crop/crop_utils.py",
+  "line": 12,
+  "code": "def crop_plate(image: np.ndarray, xyxy_box: tuple[float, float, float, float]) -> np.ndarray:\n    \"\"\"\n    ครอปป้ายทะเบียนจากรูปต้นฉบับตามกรอบที่ตรวจจับได้ (พิกเซลจริง ไม่ใช่ normalized)\n    ขยายขอบ PAD_PX พิกเซล แต่ไม่เกินขอบรูปต้นฉบับ แล้ว resize เป็น OUTPUT_SIZE\n    \"\"\"\n    h, w = image.shape[:2]\n    x0, y0, x1, y1 = xyxy_box\n\n    x0 = max(0, int(round(x0)) - PAD_PX)\n    y0 = max(0, int(round(y0)) - PAD_PX)\n    x1 = min(w, int(round(x1)) + PAD_PX)\n    y1 = min(h, int(round(y1)) + PAD_PX)\n\n    if x1 <= x0 or y1 <= y0:\n        raise ValueError(f\"กรอบไม่ถูกต้อง: ({x0},{y0},{x1},{y1}) บนรูปขนาด {w}x{h}\")\n\n    cropped = image[y0:y1, x0:x1]\n    resized = cv2.resize(cropped, OUTPUT_SIZE, interpolation=cv2.INTER_CUBIC)\n    return resized"
+ },
+ {
+  "key": "iou",
+  "path": "src/train/evaluate_test_set.py",
+  "line": 41,
+  "code": "def iou(box_a, box_b):\n    ax0, ay0, ax1, ay1 = box_a\n    bx0, by0, bx1, by1 = box_b\n    inter_x0 = max(ax0, bx0)\n    inter_y0 = max(ay0, by0)\n    inter_x1 = min(ax1, bx1)\n    inter_y1 = min(ay1, by1)\n    inter_w = max(0.0, inter_x1 - inter_x0)\n    inter_h = max(0.0, inter_y1 - inter_y0)\n    inter_area = inter_w * inter_h\n    area_a = (ax1 - ax0) * (ay1 - ay0)\n    area_b = (bx1 - bx0) * (by1 - by0)\n    union = area_a + area_b - inter_area\n    return inter_area / union if union > 0 else 0.0"
+ },
+ {
+  "key": "canvas",
+  "path": "src/app/feedback_utils.py",
+  "line": 33,
+  "code": "def canvas_rect_to_yolo(rect: dict, canvas_w: int, canvas_h: int, img_w: int, img_h: int):\n    \"\"\"\n    แปลงกรอบสี่เหลี่ยมที่วาดบน st_canvas (fabric.js object) ให้เป็น YOLO format\n    (cx, cy, w, h) normalized เทียบขนาดรูปต้นฉบับจริง (img_w, img_h)\n\n    fabric.js เก็บตำแหน่ง/ขนาดกรอบเป็น left, top, width, height ของตอนวาดครั้งแรก\n    แล้วถ้าผู้ใช้ลาก-ปรับขนาดภายหลัง ขนาดจริงจะคูณด้วย scaleX/scaleY เพิ่มเข้ามา\n    ต้องคูณกลับก่อนถึงจะได้ขนาดกรอบที่แสดงผลจริงบน canvas\n    \"\"\"\n    left = rect[\"left\"]\n    top = rect[\"top\"]\n    width = rect[\"width\"] * rect.get(\"scaleX\", 1)\n    height = rect[\"height\"] * rect.get(\"scaleY\", 1)\n\n    # canvas อาจแสดงรูปย่อ/ขยายจากขนาดจริง ต้องคูณ scale กลับเป็นพิกัดรูปต้นฉบับก่อน\n    scale_x = img_w / canvas_w\n    scale_y = img_h / canvas_h\n\n    x0 = left * scale_x\n    y0 = top * scale_y\n    x1 = (left + width) * scale_x\n    y1 = (top + height) * scale_y\n\n    # กันกรอบเกินขอบรูป (เผื่อผู้ใช้ลากทะลุขอบ canvas)\n    x0, x1 = sorted((max(0, min(x0, img_w)), max(0, min(x1, img_w))))\n    y0, y1 = sorted((max(0, min(y0, img_h)), max(0, min(y1, img_h))))\n\n    cx = (x0 + x1) / 2 / img_w\n    cy = (y0 + y1) / 2 / img_h\n    w = (x1 - x0) / img_w\n    h = (y1 - y0) / img_h\n    return cx, cy, w, h"
+ }
+]

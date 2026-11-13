@@ -1,0 +1,81 @@
+============================================================
+ คำสั่งตัวอย่างสำหรับผู้ตรวจ - รันโมเดลตรวจจับป้ายทะเบียนไทย (YOLO11n) ผ่าน Command Line
+ Example commands for running the Thai license plate model from the command line
+============================================================
+
+ต้องมี: Python 3.9 - 3.13 (ตรวจสอบด้วย  python3 --version  หรือ  python --version)
+ไม่ต้องใช้ GPU และไม่ต้องใช้ dataset - รันบน CPU ได้ ใช้ไฟล์ models/best.pt ที่แนบมาแล้ว
+
+------------------------------------------------------------
+ขั้นที่ 1  เข้าโฟลเดอร์โปรเจกต์ (โฟลเดอร์ที่มี README.md และ models/ อยู่ข้างใน)
+------------------------------------------------------------
+  cd thai-license-plate-yolo11
+
+------------------------------------------------------------
+ขั้นที่ 2  สร้าง virtual environment และติดตั้งไลบรารี (ทำครั้งเดียว ใช้เวลาหลายนาที)
+------------------------------------------------------------
+  macOS / Linux:
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements-cli.txt
+
+  Windows (Command Prompt):
+    python -m venv .venv
+    .venv\Scripts\activate.bat
+    pip install -r requirements-cli.txt
+
+  Windows (PowerShell):
+    python -m venv .venv
+    .venv\Scripts\Activate.ps1
+    pip install -r requirements-cli.txt
+
+------------------------------------------------------------
+ขั้นที่ 3  รันโมเดล (ตัวอย่างคำสั่ง)
+------------------------------------------------------------
+  (ใช้ python3 แทน python ได้ถ้าเครื่องเป็น macOS/Linux และยังไม่ได้เปิด venv)
+
+  [A] รูปเดียว - ใช้รูปตัวอย่างที่แนบมา
+    python src/inference/predict_and_crop.py --image samples/plate_004.jpg
+
+  [B] ทั้งโฟลเดอร์ (ตรวจทุกรูปใน samples/)
+    python src/inference/predict_and_crop.py --image samples/
+
+  [C] หลายรูปพร้อมกัน
+    python src/inference/predict_and_crop.py --image samples/plate_004.jpg samples/plate_011.jpg
+
+  [D] โหมดโต้ตอบ - โปรแกรมถาม path รูปเอง (พิมพ์ path แล้วกด Enter, พิมพ์ q เพื่อออก)
+    python src/inference/predict_and_crop.py
+
+  [E] ใช้รูปของผู้ตรวจเอง (ใส่ path ของรูปรถจริง ๆ)
+    macOS / Linux:  python src/inference/predict_and_crop.py --image ~/Desktop/car.jpg
+    Windows:        python src/inference/predict_and_crop.py --image "C:\Users\ชื่อ\Desktop\car.jpg"
+
+  [F] กำหนดที่เก็บผลลัพธ์เอง
+    python src/inference/predict_and_crop.py --image samples/plate_004.jpg --out-dir my_results
+    python src/inference/predict_and_crop.py --image samples/plate_004.jpg --out my_results/result.jpg
+
+  [G] บังคับใช้ CPU / ปรับค่าความมั่นใจ
+    python src/inference/predict_and_crop.py --image samples/plate_004.jpg --device cpu
+    python src/inference/predict_and_crop.py --image samples/plate_004.jpg --conf 0.5
+
+  ดูตัวเลือกทั้งหมด:
+    python src/inference/predict_and_crop.py --help
+
+------------------------------------------------------------
+ผลลัพธ์ที่คาดหวัง
+------------------------------------------------------------
+  - ในเทอร์มินัลขึ้นข้อความ เช่น
+        โหลดโมเดล: best.pt | อุปกรณ์ประมวลผล: cpu
+        พบป้ายทะเบียน (confidence=0.82, จำนวนกรอบที่เจอ=1)
+        บันทึกผลลัพธ์ที่: .../outputs/crops/plate_004_plate.jpg
+  - ไฟล์รูปป้ายที่ครอปแล้ว (ขนาด 400x200 พิกเซล) อยู่ที่ outputs/crops/<ชื่อรูป>_plate.jpg
+  - ถ้าไม่พบป้าย จะขึ้น "ไม่พบป้ายทะเบียน" (ไม่ใช่ error)
+
+------------------------------------------------------------
+แก้ปัญหาเบื้องต้น
+------------------------------------------------------------
+  - "python: command not found"  -> ลองใช้ python3 แทน
+  - "No module named ultralytics" -> ยังไม่ได้เปิด venv หรือยังไม่ได้ติดตั้ง (ทำขั้นที่ 2 ใหม่)
+  - ไม่พบไฟล์โมเดล -> ต้องรันจากโฟลเดอร์ thai-license-plate-yolo11 ที่มี models/best.pt
+  - ครั้งแรกอาจช้าเพราะโหลดไลบรารี การตรวจจับต่อรูปใช้เวลาไม่กี่ร้อยมิลลิวินาที
+  - เรื่อง Dataset และรายละเอียดอื่น ๆ ดูใน README.md (ส่วน "เรื่อง Dataset ในแพ็กเกจที่ส่ง")

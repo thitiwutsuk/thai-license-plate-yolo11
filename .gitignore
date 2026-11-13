@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Data (ไม่ push รูปภาพจริง/ไฟล์ใหญ่ขึ้น git)
+data/raw/*
+data/train/*
+data/val/*
+data/test/*
+data/cv/*
+!data/**/.gitkeep
+!data/raw/CREDITS.md
+!data/raw/dataset_manifest.csv
+
+# Model weights
+models/*.pt
+!models/best.pt
+!models/.gitkeep
+
+# Outputs
+outputs/crops/*
+outputs/predictions/*
+!outputs/**/.gitkeep
+
+# OS / editor
+.DS_Store
+.ipynb_checkpoints/
+
+# Ultralytics / MLflow stray files
+mlflow.db
+mlruns/
+runs/
+yolo11n.pt

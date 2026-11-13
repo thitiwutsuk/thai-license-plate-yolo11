@@ -1,0 +1,5 @@
+# สำหรับรันผ่าน Command Line อย่างเดียว (ผู้ตรวจ): pip install -r requirements-cli.txt
+# ultralytics จะติดตั้ง torch, numpy, pillow, pyyaml และอื่น ๆ ที่จำเป็นมาให้เอง
+# ล็อกเวอร์ชันเดียวกับที่ใช้เทรนและทดสอบ เพื่อให้ผลลัพธ์ตรงกับในรายงาน
+ultralytics==8.4.190
+opencv-python>=4.6

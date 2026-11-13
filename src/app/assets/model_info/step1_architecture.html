@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>License Plate Detection · Step 1–4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0;background:#FAFAFA}
+section+section{border-top:1px solid #ECECEF}
+</style>
+</head>
+<body style="margin:0;background:#FAFAFA">
+<div id="scale-wrap">
+<section style="width: 1440px; min-width: 1440px; max-width: 1440px; margin: 0 auto; box-sizing: border-box; padding: 64px; display: flex; flex-direction: column; gap: 28px; background: #FAFAFA; font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif; color: #09090B">
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; letter-spacing: 0.08em; font-weight: 500; color: #4F46E5">STEP 1 · ARCHITECTURE &amp; TRAINING</div>
+<h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 700; letter-spacing: -0.02em">สถาปัตยกรรมและการเทรน</h1>
+<p style="margin: 0; font-size: 16px; line-height: 26px; color: #52525B">ข้อมูลพื้นฐานของโมเดลที่ใช้งานจริง ตั้งแต่สถาปัตยกรรม จำนวนคลาส ไปจนถึงวิธีแบ่งข้อมูลเทรน/ทดสอบ</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #09090B; border-radius: 16px; color: #FFFFFF">
+<div style="font-size: 13px; line-height: 20px; color: #D4D4D8">Architecture</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">YOLO11n</div>
+<div style="font-size: 13px; line-height: 20px; color: #D4D4D8">Ultralytics · nano · 1 class</div>
+</div>
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 16px">
+<div style="font-size: 13px; line-height: 20px; color: #52525B">Data split</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">200 / 50</div>
+<div style="font-size: 13px; line-height: 20px; color: #52525B">train / test จาก 250 รูป</div>
+</div>
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 16px">
+<div style="font-size: 13px; line-height: 20px; color: #52525B">Cross-validation</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">5-fold</div>
+<div style="font-size: 13px; line-height: 20px; color: #52525B">ใช้ Fold 3 จริง</div>
+</div>
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 16px">
+<div style="font-size: 13px; line-height: 20px; color: #52525B">Device</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">Apple MPS</div>
+<div style="font-size: 13px; line-height: 20px; color: #52525B">Metal Performance Shaders</div>
+</div>
+</div>
+
+<div style="flex: 1; display: flex; flex-direction: row; gap: 16px; min-height: 0">
+
+<div style="flex: 2; min-width: 0; box-sizing: border-box; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 20px">
+<h2 style="margin: 0; font-size: 18px; line-height: 28px; font-weight: 600">การแบ่งข้อมูล 250 รูป</h2>
+
+<div style="display: flex; flex-direction: row; gap: 4px; height: 40px; font-size: 14px; line-height: 20px; font-weight: 600; color: #FFFFFF">
+<div style="width: 80%; height: 40px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; border-radius: 8px 0 0 8px; background: #1E3A8A"><span>Train · 200 รูป <span style="font-weight: 400; color: #BFDBFE">(ใช้ทำ 5-fold cross-validation)</span></span></div>
+<div style="flex: 1; height: 40px; box-sizing: border-box; padding: 0 16px; display: flex; align-items: center; border-radius: 0 8px 8px 0; background: #C2410C">Test · 50 รูป</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid #F0F0F2">
+<div style="font-size: 13px; line-height: 20px; color: #71717A">ข้อมูล train 200 รูป แบ่งเป็น 5 ส่วน ส่วนละ 40 รูป แต่ละรอบใช้ 1 ส่วนเป็น validation ที่เหลือ 4 ส่วนใช้เทรน</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+
+<div style="display: grid; grid-template-columns: 150px repeat(5, minmax(0, 1fr)); gap: 6px; align-items: center; height: 36px; padding: 0 8px; border-radius: 10px">
+<div style="font-size: 14px; line-height: 20px; font-weight: 600">Fold 1</div>
+<div style="height: 28px; border-radius: 6px; background: #F59E0B; display: flex; align-items: center; justify-content: center; font-size: 12px; line-height: 16px; font-weight: 600; color: #451A03">Val</div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+</div>
+
+<div style="display: grid; grid-template-columns: 150px repeat(5, minmax(0, 1fr)); gap: 6px; align-items: center; height: 36px; padding: 0 8px; border-radius: 10px">
+<div style="font-size: 14px; line-height: 20px; font-weight: 600">Fold 2</div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #F59E0B; display: flex; align-items: center; justify-content: center; font-size: 12px; line-height: 16px; font-weight: 600; color: #451A03">Val</div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+</div>
+
+<div style="display: grid; grid-template-columns: 150px repeat(5, minmax(0, 1fr)); gap: 6px; align-items: center; height: 36px; padding: 0 8px; border-radius: 10px; background: #EEF2FF; box-shadow: inset 0 0 0 1px #C7D2FE">
+<div style="display: flex; flex-direction: row; align-items: center; gap: 8px"><div style="font-size: 14px; line-height: 20px; font-weight: 600">Fold 3</div><div style="padding: 0 8px; border-radius: 999px; background: #4F46E5; color: #FFFFFF; font-size: 11px; line-height: 20px; font-weight: 600">ใช้งานจริง</div></div>
+<div style="height: 28px; border-radius: 6px; background: #BFDBFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #BFDBFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #F59E0B; display: flex; align-items: center; justify-content: center; font-size: 12px; line-height: 16px; font-weight: 600; color: #451A03">Val</div>
+<div style="height: 28px; border-radius: 6px; background: #BFDBFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #BFDBFE"></div>
+</div>
+
+<div style="display: grid; grid-template-columns: 150px repeat(5, minmax(0, 1fr)); gap: 6px; align-items: center; height: 36px; padding: 0 8px; border-radius: 10px">
+<div style="font-size: 14px; line-height: 20px; font-weight: 600">Fold 4</div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #F59E0B; display: flex; align-items: center; justify-content: center; font-size: 12px; line-height: 16px; font-weight: 600; color: #451A03">Val</div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+</div>
+
+<div style="display: grid; grid-template-columns: 150px repeat(5, minmax(0, 1fr)); gap: 6px; align-items: center; height: 36px; padding: 0 8px; border-radius: 10px">
+<div style="font-size: 14px; line-height: 20px; font-weight: 600">Fold 5</div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #DBEAFE"></div>
+<div style="height: 28px; border-radius: 6px; background: #F59E0B; display: flex; align-items: center; justify-content: center; font-size: 12px; line-height: 16px; font-weight: 600; color: #451A03">Val</div>
+</div>
+
+</div>
+<div style="display: flex; flex-direction: row; gap: 24px; font-size: 13px; line-height: 20px; color: #3F3F46">
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 12px; height: 12px; border-radius: 3px; background: #DBEAFE; box-shadow: inset 0 0 0 1px #93C5FD"></div>Train · 160 รูป</div>
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 12px; height: 12px; border-radius: 3px; background: #F59E0B"></div>Validation · 40 รูป</div>
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 12px; height: 12px; border-radius: 3px; background: #C2410C"></div>Test 50 รูป แยกไว้ ไม่ใช้ในทุก fold</div>
+</div>
+</div>
+</div>
+
+<div style="flex: 1; min-width: 0; box-sizing: border-box; padding: 24px 28px; display: flex; flex-direction: column; gap: 8px; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 20px">
+<h2 style="margin: 0 0 8px 0; font-size: 18px; line-height: 28px; font-weight: 600">สเปกโมเดล</h2>
+<div style="display: flex; flex-direction: row; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #F0F0F2; font-size: 14px; line-height: 22px"><div style="color: #52525B">Framework</div><div style="font-weight: 600">Ultralytics</div></div>
+<div style="display: flex; flex-direction: row; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #F0F0F2; font-size: 14px; line-height: 22px"><div style="color: #52525B">Model</div><div style="font-family: 'JetBrains Mono', monospace; font-weight: 600">YOLO11n</div></div>
+<div style="display: flex; flex-direction: row; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #F0F0F2; font-size: 14px; line-height: 22px"><div style="color: #52525B">Model size</div><div style="font-weight: 600">nano</div></div>
+<div style="display: flex; flex-direction: row; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #F0F0F2; font-size: 14px; line-height: 22px"><div style="color: #52525B">Classes</div><div style="font-family: 'JetBrains Mono', monospace; font-weight: 600">1 · license_plate</div></div>
+<div style="display: flex; flex-direction: row; justify-content: space-between; gap: 16px; padding: 12px 0; border-bottom: 1px solid #F0F0F2; font-size: 14px; line-height: 22px"><div style="color: #52525B">Input size</div><div style="font-family: 'JetBrains Mono', monospace; font-weight: 600">640×640</div></div>
+<div style="display: flex; flex-direction: row; justify-content: space-between; gap: 16px; padding: 12px 0; font-size: 14px; line-height: 22px"><div style="color: #52525B">Device</div><div style="font-weight: 600">Apple MPS</div></div>
+</div>
+
+</div>
+</section>
+</div>
+<script>
+(function(){
+  var wrap = document.getElementById("scale-wrap");
+  function fit(){
+    wrap.style.zoom = 1;
+    var full = wrap.scrollWidth || 1440;
+    var avail = document.documentElement.clientWidth || window.innerWidth;
+    var scale = Math.min(1, avail / full);
+    wrap.style.zoom = scale;
+    var h = Math.ceil(wrap.getBoundingClientRect().height) + 4;
+    if (window.frameElement) { window.frameElement.style.height = h + "px"; }
+  }
+  fit();
+  window.addEventListener("resize", fit);
+})();
+</script>
+</body>
+</html>

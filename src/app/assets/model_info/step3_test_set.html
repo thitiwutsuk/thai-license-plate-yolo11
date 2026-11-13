@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>License Plate Detection · Step 1–4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=IBM+Plex+Sans+Thai:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0;background:#FAFAFA}
+section+section{border-top:1px solid #ECECEF}
+</style>
+</head>
+<body style="margin:0;background:#FAFAFA">
+<div id="scale-wrap">
+<section style="width: 1440px; min-width: 1440px; max-width: 1440px; margin: 0 auto; box-sizing: border-box; padding: 64px; display: flex; flex-direction: column; gap: 28px; background: #FAFAFA; font-family: 'Inter', 'IBM Plex Sans Thai', sans-serif; color: #09090B">
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; letter-spacing: 0.08em; font-weight: 500; color: #4F46E5">STEP 3 · HELD-OUT TEST SET</div>
+<h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 700; letter-spacing: -0.02em">ผลทดสอบกับชุดข้อมูลที่ไม่เคยเห็น</h1>
+<p style="margin: 0; font-size: 16px; line-height: 26px; color: #52525B">วัดผลโมเดล Fold 3 กับรูปที่ไม่ได้ใช้ทั้งตอนเทรนและตอนเลือกโมเดล</p>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px">
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 16px">
+<div style="font-size: 13px; line-height: 20px; color: #52525B">Precision</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">98.8%</div>
+<div style="font-size: 13px; line-height: 20px; color: #52525B">ทายว่าเจอป้าย แล้วถูกจริงกี่ %</div>
+</div>
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 16px">
+<div style="font-size: 13px; line-height: 20px; color: #52525B">Recall</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">94.0%</div>
+<div style="font-size: 13px; line-height: 20px; color: #52525B">ป้ายที่มีจริง ตรวจเจอกี่ %</div>
+</div>
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 16px">
+<div style="font-size: 13px; line-height: 20px; color: #52525B">mAP@0.5</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">95.3%</div>
+<div style="font-size: 13px; line-height: 20px; color: #52525B">คะแนนรวมความแม่นยำ</div>
+</div>
+<div style="box-sizing: border-box; height: 128px; padding: 20px 24px; display: flex; flex-direction: column; justify-content: space-between; background: #09090B; border-radius: 16px; color: #FFFFFF">
+<div style="font-size: 13px; line-height: 20px; color: #D4D4D8">Crop success</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 34px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">98.0%</div>
+<div style="font-size: 13px; line-height: 20px; color: #D4D4D8">49/50 รูป (IoU ≥ 0.5)</div>
+</div>
+</div>
+
+<div style="flex: 1; display: flex; flex-direction: row; gap: 16px; min-height: 0">
+
+<div style="flex: 2; min-width: 0; box-sizing: border-box; padding: 24px 28px; display: flex; flex-direction: column; gap: 16px; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 20px">
+<div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap">
+<h2 style="margin: 0; font-size: 18px; line-height: 28px; font-weight: 600">Validation (Fold 3) เทียบกับ Test set</h2>
+<div style="display: flex; flex-direction: row; align-items: center; gap: 24px; font-size: 14px; line-height: 20px; color: #3F3F46">
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 14px; height: 14px; border-radius: 4px; background: #CBD5E1"></div>Validation · Fold 3</div>
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 14px; height: 14px; border-radius: 4px; background: #1E3A8A"></div>Test set</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: row; gap: 12px">
+<div style="position: relative; width: 40px; height: 264px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #71717A; text-align: right">
+<div style="position: absolute; right: 0; bottom: -8px">0.90</div>
+<div style="position: absolute; right: 0; bottom: 40px">0.92</div>
+<div style="position: absolute; right: 0; bottom: 88px">0.94</div>
+<div style="position: absolute; right: 0; bottom: 136px">0.96</div>
+<div style="position: absolute; right: 0; bottom: 184px">0.98</div>
+<div style="position: absolute; right: 0; bottom: 232px">1.00</div>
+</div>
+<div style="position: relative; flex: 1; min-width: 0; height: 264px">
+<div style="position: absolute; left: 0; right: 0; bottom: 48px; border-top: 1px solid #F0F0F2"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 96px; border-top: 1px solid #F0F0F2"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 144px; border-top: 1px solid #F0F0F2"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 192px; border-top: 1px solid #F0F0F2"></div>
+<div style="position: absolute; left: 0; right: 0; bottom: 240px; border-top: 1px solid #F0F0F2"></div>
+<div style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px">
+
+<div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: center; gap: 10px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>1.000</div><div style="width: 56px; height: 240px; border-radius: 6px 6px 0 0; background: #CBD5E1"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #09090B; font-weight: 600"><div>0.988</div><div style="width: 56px; height: 211px; border-radius: 6px 6px 0 0; background: #1E3A8A"></div></div>
+</div>
+
+<div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: center; gap: 10px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>0.993</div><div style="width: 56px; height: 223px; border-radius: 6px 6px 0 0; background: #CBD5E1"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #09090B; font-weight: 600"><div>0.940</div><div style="width: 56px; height: 96px; border-radius: 6px 6px 0 0; background: #1E3A8A"></div></div>
+</div>
+
+<div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: center; gap: 10px">
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #52525B"><div>0.995</div><div style="width: 56px; height: 228px; border-radius: 6px 6px 0 0; background: #CBD5E1"></div></div>
+<div style="display: flex; flex-direction: column; align-items: center; gap: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #09090B; font-weight: 600"><div>0.953</div><div style="width: 56px; height: 127px; border-radius: 6px 6px 0 0; background: #1E3A8A"></div></div>
+</div>
+
+</div>
+<div style="position: absolute; left: 0; right: 0; bottom: 0; border-top: 1px solid #A1A1AA"></div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: row; gap: 12px">
+<div style="width: 40px"></div>
+<div style="flex: 1; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; text-align: center">
+<div style="display: flex; flex-direction: column; gap: 2px"><div style="font-size: 15px; line-height: 22px; font-weight: 600">Precision</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #C2410C">−0.012</div></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><div style="font-size: 15px; line-height: 22px; font-weight: 600">Recall</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #C2410C">−0.053</div></div>
+<div style="display: flex; flex-direction: column; gap: 2px"><div style="font-size: 15px; line-height: 22px; font-weight: 600">mAP@0.5</div><div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 16px; color: #C2410C">−0.042</div></div>
+</div>
+</div>
+
+<p style="margin: 0; font-size: 13px; line-height: 20px; color: #71717A">แกนตั้งเริ่มที่ 0.90 (ไม่ใช่ 0) · ตัวเลขสีส้มคือส่วนต่างของ Test set เทียบกับ Validation</p>
+</div>
+
+<div style="flex: 1; min-width: 0; box-sizing: border-box; padding: 24px 28px; display: flex; flex-direction: column; gap: 20px; background: #FFFFFF; border: 1px solid #E4E4E7; border-radius: 20px">
+<h2 style="margin: 0; font-size: 18px; line-height: 28px; font-weight: 600">Crop success</h2>
+<div style="display: flex; flex-direction: column; gap: 4px">
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 48px; line-height: 56px; font-weight: 600; letter-spacing: -0.02em">49<span style="color: #A1A1AA"> / 50</span></div>
+<div style="font-size: 14px; line-height: 22px; color: #52525B">รูปที่ครอปป้ายได้ถูกตำแหน่ง (IoU ≥ 0.5)</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(10, 22px); gap: 8px">
+<div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div>
+<div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div>
+<div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div>
+<div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div>
+<div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; border-radius: 5px; background: #1E3A8A"></div><div style="width: 22px; height: 22px; box-sizing: border-box; border-radius: 5px; border: 2px solid #EA580C; background: #FFF7ED"></div>
+</div>
+<div style="display: flex; flex-direction: row; gap: 20px; font-size: 13px; line-height: 20px; color: #3F3F46">
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 12px; height: 12px; border-radius: 3px; background: #1E3A8A"></div>ครอปสำเร็จ 49</div>
+<div style="display: flex; align-items: center; gap: 8px"><div style="width: 12px; height: 12px; box-sizing: border-box; border-radius: 3px; border: 2px solid #EA580C; background: #FFF7ED"></div>ไม่สำเร็จ 1</div>
+</div>
+</div>
+
+</div>
+</section>
+</div>
+<script>
+(function(){
+  var wrap = document.getElementById("scale-wrap");
+  function fit(){
+    wrap.style.zoom = 1;
+    var full = wrap.scrollWidth || 1440;
+    var avail = document.documentElement.clientWidth || window.innerWidth;
+    var scale = Math.min(1, avail / full);
+    wrap.style.zoom = scale;
+    var h = Math.ceil(wrap.getBoundingClientRect().height) + 4;
+    if (window.frameElement) { window.frameElement.style.height = h + "px"; }
+  }
+  fit();
+  window.addEventListener("resize", fit);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+ultralytics==8.4.190
+opencv-python
+pyyaml
+matplotlib
+scikit-learn
+numpy
+pandas
+streamlit==1.51.0
+streamlit-drawable-canvas==0.9.3
