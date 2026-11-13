@@ -1,0 +1,7 @@
+fold,precision,recall,map50,weights
+1,0.9522153848073079,0.9964361579773046,0.9896975546975545,/Users/athens/Downloads/Coding/thai-license-plate-yolo11/outputs/predictions/runs/fold_1/weights/best.pt
+2,0.9359789788887523,0.9512195121951219,0.9700943396226415,/Users/athens/Downloads/Coding/thai-license-plate-yolo11/outputs/predictions/runs/fold_2/weights/best.pt
+3,1.0,0.9926745346633372,0.995,/Users/athens/Downloads/Coding/thai-license-plate-yolo11/outputs/predictions/runs/fold_3/weights/best.pt
+4,0.9741444154528031,0.9420505925263524,0.987700162156684,/Users/athens/Downloads/Coding/thai-license-plate-yolo11/outputs/predictions/runs/fold_4/weights/best.pt
+5,0.9714892136885822,0.95,0.9856077256077258,/Users/athens/Downloads/Coding/thai-license-plate-yolo11/outputs/predictions/runs/fold_5/weights/best.pt
+average,0.9668,0.9665,0.9856,

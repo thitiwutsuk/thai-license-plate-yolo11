@@ -1,0 +1,7 @@
+metric,value
+precision,0.9881
+recall,0.9400
+map50,0.9535
+crop_success_rate,0.9800
+crop_success_count,49
+total_test_images,50

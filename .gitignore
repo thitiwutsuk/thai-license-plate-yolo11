@@ -23,6 +23,9 @@ models/*.pt
 outputs/crops/*
 outputs/predictions/*
 !outputs/**/.gitkeep
+!outputs/predictions/cv_summary.csv
+!outputs/predictions/test_set_summary.csv
+!outputs/predictions/threshold_sweep.csv
 
 # OS / editor
 .DS_Store
