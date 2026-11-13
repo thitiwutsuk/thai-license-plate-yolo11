@@ -33,3 +33,6 @@ mlflow.db
 mlruns/
 runs/
 yolo11n.pt
+
+# Submission package (สร้างใหม่ได้ด้วย make_submission.py)
+submission/
