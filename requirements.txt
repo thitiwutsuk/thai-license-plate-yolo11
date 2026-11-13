@@ -1,5 +1,5 @@
 ultralytics==8.4.190
-opencv-python
+opencv-python-headless
 pyyaml
 matplotlib
 scikit-learn
